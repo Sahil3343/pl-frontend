@@ -53,4 +53,4 @@ jobs:
           app-name: 'plotline-angular'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EC0BA01E7C7B4E77B70DFE3285E48799 }}
-          package: .
+          package: ./dist/plotline-assignment
