@@ -33,11 +33,11 @@ export class AppComponent {
   queryBuilder : string = "";
 
   calculateDistance = () => {
-    console.log(this.location.value);
+    //console.log(this.location.value);
     this.queryBuilder = `start=${this.location.value.start}&end=${this.location.value.destination}`;
-    console.log(this.queryBuilder);
+    //console.log(this.queryBuilder);
     this.locationData.getLocationDistance(this.queryBuilder).subscribe((result) => {
-      console.log(result);
+      //console.log(result);
       this.locations = result;
     })
   }
