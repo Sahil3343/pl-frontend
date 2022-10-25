@@ -1,22 +1,31 @@
-<form [formGroup] = "location" (ngSubmit)="calculateDistance()">
-  Start: <input type="text" formControlName="start" ngx-google-places-autocomplete (onAddressChange)="AddressChange($event)">
+<form [formGroup]="location" id="locationForm" (ngSubmit)="calculateDistance()">
+  Start: <input type="text" id="start" formControlName="start" ngx-google-places-autocomplete
+    (onAddressChange)="GetStartAddressChange($event)">
   <br><br>
-  Destination: <input type="text" formControlName="destination" ngx-google-places-autocomplete (onAddressChange)="AddressChange2($event)">
+  Destination: <input type="text" formControlName="destination" ngx-google-places-autocomplete
+    (onAddressChange)="GetEndAddress($event)">
   <br><br>
   <button>Submit</button>
 
   <br><br><br>
 
-    Distance: {{locations.distance}}
-    <br>
-    Duration: {{locations.duration}}
+
 </form>
+<div *ngIf="displaydata">
+Start Location: {{locations.StartLocation}}
+<br>
+Destination Location: {{locations.DestinationLocation}}
+<br>
+Distance: {{locations.distance}} ({{locations.duration}})
+</div>
 
 <div *ngIf="errorCheck">
-  <h2>You have entered an invalid location!</h2>
+  <h2>{{locations.ErrorMessage}}
+  </h2>
 </div>
 
 <br><br>
 
-<div *ngIf="condition"><app-googlemap></app-googlemap></div>
-
+<div *ngIf="condition">
+  <app-googlemap></app-googlemap>
+</div>

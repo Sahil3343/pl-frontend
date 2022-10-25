@@ -11,60 +11,92 @@ import { DistanceDataService } from './services/distance-data.service'
 export class AppComponent {
   title = 'plotline-assignment';
 
-  formattedaddress=" ";
-  formattedaddress2=" ";
-  
-  public AddressChange(address: any) {
-   this.formattedaddress=address.formatted_address
-}
 
-public AddressChange2(address: any) {
-  this.formattedaddress2=address.formatted_address
-}
 
-  condition = false;
-  errorCheck = false;
-
-  locations: any = {
-    distance: "",
-    duration: "",
-    latLangs: [{lat: 13,lng: 13}]
-  }
-
-  constructor(private locationData: DistanceDataService) {
-  }
+  StartAddress: string = "";
+  Endaddress: string = "";
 
   location = new FormGroup({
     start: new FormControl(''),
     destination: new FormControl('')
   })
 
+  public GetStartAddressChange(address: any) {
+    this.StartAddress = address.formatted_address;
+  }
+
+  public GetEndAddress(address: any) {
+    this.Endaddress = address.formatted_address;
+
+  }
+
+  condition = false;
+  errorCheck = false;
+  displaydata = false;
+
+  locations: any = {
+    distance: "",
+    duration: "",
+    latLangs: [{ lat: 13, lng: 13 }],
+    StartLocation: "",
+    DestinationLocation: "",
+    ErrorMessage: ""
+  }
+
+  constructor(private locationData: DistanceDataService) {
+  }
+
+
   queryBuilder: string = "";
 
   calculateDistance = () => {
     this.condition = false;
-    this.queryBuilder = `start=${this.formattedaddress}&end=${this.formattedaddress2}`;
-    this.locationData.getLocationDistance(this.queryBuilder).subscribe((result) => {
-      this.locations = result;
+    this.locations.distance = "";
+    this.locations.duration = "";
+    this.displaydata = false;
+    this.locations.ErrorMessage = ""
 
-      this.errorCheck = false;
-      
-      
-      if(this.locations.status == "error") {
-        this.errorCheck = true;
-        this.condition = false;
-      } else {
 
-        this.condition = false;
-
-        sessionStorage.setItem('start', this.formattedaddress);
-        sessionStorage.setItem('end', this.formattedaddress2);
-
-        this.condition = true
+    if (this.StartAddress === "" || this.Endaddress === "") {
+      this.errorCheck = true;
+      this.condition = false;
+      this.locations.ErrorMessage = "Invalid/Empty Locations. Please select the locations again!!"
+    }
+    else if (this.StartAddress == this.Endaddress) {
+      this.errorCheck = true;
+      this.condition = false;
+      this.locations.ErrorMessage = "Start and Destination locations cannot be the same. Please select the locations again!!"
+      this.StartAddress = "";
+      this.Endaddress = ""
+      if (this.location.valid) {
+        this.location.reset();
       }
-
-      ;
-    })
+    }
+    else {
+      this.queryBuilder = `start=${this.StartAddress}&end=${this.Endaddress}`;
+      this.locationData.getLocationDistance(this.queryBuilder).subscribe((result) => {
+        this.locations = result;
+        this.errorCheck = false;
+        if (this.locations.status == "error") {
+          this.errorCheck = true;
+          this.condition = false;
+          this.locations.ErrorMessage = "Sorry, we could not calculate driving directions!!"
+        } else {
+          this.condition = false;
+          sessionStorage.setItem('start', this.StartAddress);
+          sessionStorage.setItem('end', this.Endaddress);
+          this.locations.StartLocation = this.StartAddress;
+          this.locations.DestinationLocation = this.Endaddress;
+          this.condition = true
+          this.displaydata = true;
+          this.StartAddress = "";
+          this.Endaddress = ""
+          if (this.location.valid) {
+            this.location.reset();
+          }
+        }
+      })
+    }
   }
 
 }
