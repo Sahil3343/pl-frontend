@@ -1,0 +1,11 @@
+<!-- Google map component for rending map -->
+<google-map height="400px"
+            width="750px"
+            [center]="center"
+            [zoom]="zoom"
+            (mapMousemove)="move($event)">
+
+
+            <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults"
+                           [directions]="directionsResults"></map-directions-renderer>
+</google-map>

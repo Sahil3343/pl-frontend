@@ -1,4 +1,3 @@
-import { query } from '@angular/animations';
 import { Component } from '@angular/core';
 
 import { FormGroup, FormControl } from '@angular/forms';
@@ -12,33 +11,60 @@ import { DistanceDataService } from './services/distance-data.service'
 export class AppComponent {
   title = 'plotline-assignment';
 
-  locations : any = {
-    distance : "",
-    duration : ""
+  formattedaddress=" ";
+  formattedaddress2=" ";
+  
+  public AddressChange(address: any) {
+   this.formattedaddress=address.formatted_address
+}
+
+public AddressChange2(address: any) {
+  this.formattedaddress2=address.formatted_address
+}
+
+  condition = false;
+  errorCheck = false;
+
+  locations: any = {
+    distance: "",
+    duration: "",
+    latLangs: [{lat: 13,lng: 13}]
   }
 
-  constructor(private locationData : DistanceDataService) {
-    // this.locationData.users().subscribe((data) => {
-    //   console.log(data);
-    //   this.locations = data;
-    // })
+  constructor(private locationData: DistanceDataService) {
   }
 
   location = new FormGroup({
-    start : new FormControl(''),
-    destination : new FormControl('')
+    start: new FormControl(''),
+    destination: new FormControl('')
   })
 
-  
-  queryBuilder : string = "";
+  queryBuilder: string = "";
 
   calculateDistance = () => {
-    //console.log(this.location.value);
-    this.queryBuilder = `start=${this.location.value.start}&end=${this.location.value.destination}`;
-    //console.log(this.queryBuilder);
+    this.condition = false;
+    this.queryBuilder = `start=${this.formattedaddress}&end=${this.formattedaddress2}`;
     this.locationData.getLocationDistance(this.queryBuilder).subscribe((result) => {
-      //console.log(result);
       this.locations = result;
+
+      this.errorCheck = false;
+      
+      
+      if(this.locations.status == "error") {
+        this.errorCheck = true;
+        this.condition = false;
+      } else {
+
+        this.condition = false;
+
+        sessionStorage.setItem('start', this.formattedaddress);
+        sessionStorage.setItem('end', this.formattedaddress2);
+
+        this.condition = true
+      }
+
+      ;
     })
   }
+
 }

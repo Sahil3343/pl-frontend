@@ -14,11 +14,9 @@ export class DistanceDataService {
 
   
 
-  getLocationDistance = (data : string) => {
+  getLocationDistance = (data : string,) => {
 
     this.queryURL = `${this.URL}${data}`;
-
-    //console.log(this.queryURL);
 
     return this.http.get(this.queryURL);
   }

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "plotline-c837f": {
+      "hosting": {
+        "plotline-assignment": [
+          "plotline-c837f"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "plotline-c837f"
+  }
+}

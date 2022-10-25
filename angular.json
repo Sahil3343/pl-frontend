@@ -94,6 +94,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "plotline-assignment:build:production",
+            "firebaseProject": "plotline-c837f",
+            "firebaseHostingSite": "plotline-c837f"
+          }
         }
       }
     }
