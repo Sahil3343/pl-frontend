@@ -1,15 +1,13 @@
 <form [formGroup]="location" id="locationForm" (ngSubmit)="calculateDistance()">
-  Start: <input type="text" id="start" formControlName="start" ngx-google-places-autocomplete
+  <br><br>
+  Start: <input type="text" size="48" id="start" formControlName="start" ngx-google-places-autocomplete
     (onAddressChange)="GetStartAddressChange($event)">
   <br><br>
-  Destination: <input type="text" formControlName="destination" ngx-google-places-autocomplete
+  Destination: <input type="text" size="42" formControlName="destination" ngx-google-places-autocomplete
     (onAddressChange)="GetEndAddress($event)">
   <br><br>
   <button>Submit</button>
-
   <br><br><br>
-
-
 </form>
 <div *ngIf="displaydata">
 Start Location: {{locations.StartLocation}}
